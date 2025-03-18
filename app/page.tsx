@@ -35,7 +35,9 @@ interface SelectOption {
 
 export default function Home() {
   const [data, setData] = useState<DividendData[]>([]);
-  const [view, setView] = useState("monthly");
+  const [view, setView] = useState<"monthly" | "quarterly" | "yearly">(
+    "monthly"
+  );
   const [selectedSymbol, setSelectedSymbol] = useState<SelectOption | null>(
     null
   );
@@ -155,28 +157,31 @@ export default function Home() {
     ],
   };
 
-const processData = (data: DividendData[], type: 'monthly' | 'quarterly' | 'yearly') => {
+  const processData = (
+    data: DividendData[],
+    type: "monthly" | "quarterly" | "yearly"
+  ) => {
     const groupedData: Record<string, number> = {};
 
     data.forEach((row) => {
-    const date = new Date(row.date);
-    let key: string | undefined;
+      const date = new Date(row.date);
+      let key: string | undefined;
 
-    if (type === "monthly") {
+      if (type === "monthly") {
         key = `${date.getFullYear()}-${(date.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}`;
-    } else if (type === "quarterly") {
+          .toString()
+          .padStart(2, "0")}`;
+      } else if (type === "quarterly") {
         key = `${date.getFullYear()}-Q${Math.ceil((date.getMonth() + 1) / 3)}`;
-    } else if (type === "yearly") {
+      } else if (type === "yearly") {
         key = `${date.getFullYear()}`;
-    }
+      }
 
-    // Skip if key is undefined
-    if (typeof key === 'undefined') return;
+      // Skip if key is undefined
+      if (typeof key === "undefined") return;
 
-    if (!groupedData[key]) groupedData[key] = 0;
-    groupedData[key] += row.netDividendAmount || 0;
+      if (!groupedData[key]) groupedData[key] = 0;
+      groupedData[key] += row.netDividendAmount || 0;
     });
 
     return {
@@ -298,20 +303,22 @@ const processData = (data: DividendData[], type: 'monthly' | 'quarterly' | 'year
                   {dividendBySymbol.length > 0 ? (
                     <div>
                       <div className="flex gap-2">
-                        {["monthly", "quarterly", "yearly"].map((type) => (
-                          <button
-                            key={type}
-                            onClick={() => setView(type)}
-                            className={`px-6 py-3 rounded-xl border border-white/10 transition-all backdrop-blur-sm flex items-center gap-2
+                        {(["monthly", "quarterly", "yearly"] as const).map(
+                          (type) => (
+                            <button
+                              key={type}
+                              onClick={() => setView(type)}
+                              className={`px-6 py-3 rounded-xl border border-white/10 transition-all backdrop-blur-sm flex items-center gap-2
         ${
           view === type
             ? "bg-blue-500 text-white"
             : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
         }`}
-                          >
-                            {type.charAt(0).toUpperCase() + type.slice(1)}
-                          </button>
-                        ))}
+                            >
+                              {type.charAt(0).toUpperCase() + type.slice(1)}
+                            </button>
+                          )
+                        )}
                       </div>
 
                       <div className="w-full h-96">
@@ -348,24 +355,25 @@ const processData = (data: DividendData[], type: 'monthly' | 'quarterly' | 'year
                                 window.innerWidth >= 640 ? "right" : "bottom",
                               labels: {
                                 color: "white",
-                                generateLabels: (chart) => {
-                                  return chart.data.labels.map((label, i) => {
-                                    const value =
-                                      chart.data.datasets[0].data[i];
-                                    const percentage = (
-                                      (value / totalDividend) *
-                                      100
-                                    ).toFixed(1);
-                                    return {
-                                      text: `${label}: ₹${value} (${percentage}%)`, // Show label, amount, and %
-                                      fillStyle:
-                                        chart.data.datasets[0].backgroundColor[
-                                          i
-                                        ],
-                                      fontColor: "white",
-                                      hidden: false,
-                                    };
-                                  });
+                                generateLabels: (chart: any) => {
+                                  return chart.data.labels.map(
+                                    (label: any, i: any) => {
+                                      const value =
+                                        chart.data.datasets[0].data[i];
+                                      const percentage = (
+                                        (value / totalDividend) *
+                                        100
+                                      ).toFixed(1);
+                                      return {
+                                        text: `${label}: ₹${value} (${percentage}%)`, // Show label, amount, and %
+                                        fillStyle:
+                                          chart.data.datasets[0]
+                                            .backgroundColor[i],
+                                        fontColor: "white",
+                                        hidden: false,
+                                      };
+                                    }
+                                  );
                                 },
                               },
                             },
@@ -374,7 +382,7 @@ const processData = (data: DividendData[], type: 'monthly' | 'quarterly' | 'year
                               color: "white",
                               anchor: "center",
                               align: "start",
-                              formatter: (value, context) => {
+                              formatter: (value: any, context: any) => {
                                 const percentage = (
                                   (value / totalDividend) *
                                   100
@@ -422,6 +430,16 @@ const processData = (data: DividendData[], type: 'monthly' | 'quarterly' | 'year
             </div>
           </footer>
         )}
+        <div className="flex justify-center mt-4">
+          <a
+            href="https://github.com/shweshi" // Replace with your GitHub URL
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-gray-200 transition"
+          >
+            <p>Github</p>
+          </a>
+        </div>
       </main>
     </div>
   );
