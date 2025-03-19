@@ -8,6 +8,8 @@ import DividendPieChart from "./components/DividendPieChart";
 import DividendSelector from "./components/DividendSelector";
 import DividendInsights from "./components/DividendInsights";
 import { DividendData } from "./components/types/types";
+import Footer from "./components/Footer";
+import { Github } from "lucide-react";
 
 const Home = () => {
   const [data, setData] = useState<DividendData[]>([]);
@@ -27,7 +29,7 @@ const Home = () => {
         <div className="max-w-6xl mx-auto px-2 sm:px-4">
           <div className="text-center border-b border-white/10 pb-4">
             <h1 className="text-3xl font-bold text-white mb-1">
-              Dividend Calculator & Visualizer
+              Dividends Calculator & Visualizer
             </h1>
           </div>
 
@@ -46,30 +48,36 @@ const Home = () => {
               </div>
 
               {/* Dividends Overview */}
-              <div className="mt-4">
+              <div className="mt-8">
                 <h1>Dividends Overview</h1>
                 <DividendStats data={filteredData} />
               </div>
 
               {/* Dividends Insights */}
-              <div className="mt-4">
+              <div className="mt-8">
                 <h1>Dividends Insights</h1>
                 <DividendInsights data={data} selectedSymbol={selectedSymbol} />
               </div>
 
               {/* Dividend Trends */}
               <div className="mt-8">
-                <h1>Dividend Trends</h1>
+                <h1>Dividends Trends</h1>
                 <DividendChart data={filteredData} />
               </div>
 
               {/* Dividend Distribution */}
               <div className="mt-8">
-                <h1>Dividend Distribution</h1>
+                <h1>Dividends Distribution</h1>
                 <DividendPieChart data={filteredData} />
               </div>
             </>
           )}
+          {data.length === 0 && <Footer />}
+          <div className="mt-8 text-center">
+            <a className="flex justify-center items-center" href="https://github.com/shweshi" target="_blank">
+              <Github size={20} className="mr-2"/> <span>GitHub</span>
+            </a>
+          </div>
         </div>
       </main>
     </div>
