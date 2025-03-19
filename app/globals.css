@@ -5,7 +5,7 @@
 
 /* Set background color globally */
 body {
-  background-color: #121826;
+  background-color: #16151c;
   color: white;
   /* Ensures text is visible */
 }
@@ -13,7 +13,12 @@ body {
 /* Optional: Apply to the main container */
 #root,
 #__next {
-  background-color: #121826;
+  background-color: #16151c;
   min-height: 100vh;
   /* Ensures full height */
+}
+
+h1 {
+  font-weight: bold;
+  font-size: large;
 }

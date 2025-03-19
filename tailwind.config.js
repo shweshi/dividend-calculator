@@ -7,8 +7,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "custom-dark": "#121826", // Replace with your desired hex code
-        "card-dark": "#1e2431"
+        "custom-dark": "#16151c", // Replace with your desired hex code
+        "card-dark": "#fff"
       },
     },
   },
